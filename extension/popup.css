@@ -1,0 +1,21 @@
+body { width: 340px; margin: 0; padding: 16px; background: #0b1220; color: #e6edf7;
+       font-family: "Segoe UI", Arial, sans-serif; font-size: 14px; }
+h1 { margin: 0 0 12px; font-size: 20px; }
+h1 span { color: #38bdf8; }
+.label { margin: 0; color: #8fa3c4; font-size: 12px; }
+.url { margin: 4px 0 12px; word-break: break-all; font-family: Consolas, monospace; font-size: 12px; }
+button { width: 100%; padding: 10px; border: none; border-radius: 8px; background: #0284c7;
+         color: #fff; font-size: 14px; cursor: pointer; }
+button:disabled { opacity: .6; cursor: default; }
+.hidden { display: none; }
+#output { margin-top: 14px; }
+.badge { display: inline-block; padding: 4px 14px; border-radius: 999px; font-weight: 700;
+         color: #0b1220; background: #94a3b8; }
+.badge.low { background: #22c55e; } .badge.medium { background: #facc15; }
+.badge.high { background: #fb923c; } .badge.critical { background: #ef4444; color: #fff; }
+.score { margin-left: 8px; color: #8fa3c4; }
+ul { padding-left: 18px; margin: 10px 0; }
+li { margin-bottom: 4px; font-size: 12px; }
+.vt { background: #121c30; border: 1px solid #25365a; border-radius: 8px; padding: 8px; margin: 10px 0; font-size: 12px; }
+.error { color: #fca5a5; }
+a { color: #38bdf8; }

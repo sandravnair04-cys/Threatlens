@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}ThreatLens - Report #{{ scan.id }}{% endblock %}
+{% block content %}
+<h1>Security report #{{ scan.id }}</h1>
+<p class="note">{{ scan.scan_type|upper }} scan &middot; {{ scan.created_at }} UTC &middot; source: {{ scan.source }}</p>
+
+<section class="card">
+    <p class="target-line">{{ scan.target }}</p>
+    {% if r.filename %}<p class="note">File: {{ r.filename }} ({{ r.file_size }} bytes)</p>{% endif %}
+    <div class="score-row">
+        <span class="badge big lvl-{{ scan.risk_level|lower }}">{{ scan.risk_level }}</span>
+        <div class="score-bar">
+            <progress max="100" value="{{ scan.risk_score }}" class="lvl-{{ scan.risk_level|lower }}"></progress>
+            <span>{{ scan.risk_score }} / 100</span>
+        </div>
+    </div>
+</section>
+
+<section class="card">
+    <h2>Why this score?</h2>
+    {% if r.assessment.breakdown %}
+    <ul class="breakdown">
+        {% for b in r.assessment.breakdown %}<li><span>+{{ b.points }}</span> {{ b.label }}</li>{% endfor %}
+    </ul>
+    {% else %}<p class="note">No risk indicators were found.</p>{% endif %}
+</section>
+
+<section class="card">
+    <h2>VirusTotal</h2>
+    {% if r.vt_error %}
+        <p class="warn">{{ r.vt_error }}</p>
+    {% elif r.vt and r.vt.found %}
+        {% if r.vt.status == 'pending' %}<p class="warn">{{ r.vt.message }}</p>{% endif %}
+        <div class="stat-grid">
+            {% for k in ['malicious', 'suspicious', 'harmless', 'undetected'] %}
+            <div class="stat"><span>{{ r.vt.stats.get(k, 0) }}</span>{{ k|capitalize }}</div>
+            {% endfor %}
+        </div>
+        {% if r.vt.details %}
+        <dl class="details">
+            {% for k, v in r.vt.details.items() %}<dt>{{ k }}</dt><dd>{{ v }}</dd>{% endfor %}
+        </dl>
+        {% endif %}
+        {% if r.vt.flagged %}
+        <h3>Engines that flagged it</h3>
+        <div class="table-wrap"><table><thead><tr><th>Engine</th><th>Category</th><th>Result</th></tr></thead><tbody>
+        {% for f in r.vt.flagged %}<tr><td>{{ f.engine }}</td><td>{{ f.category }}</td><td>{{ f.result }}</td></tr>{% endfor %}
+        </tbody></table></div>
+        {% endif %}
+        {% if r.vt.permalink %}<p><a href="{{ r.vt.permalink }}" target="_blank" rel="noopener noreferrer">Open on VirusTotal</a></p>{% endif %}
+    {% else %}
+        <p class="note">VirusTotal has no report for this item.</p>
+    {% endif %}
+</section>
+
+<div class="actions">
+    <a class="btn" href="{{ url_for('api_report', scan_id=scan.id) }}">Download JSON</a>
+    <a class="btn secondary" href="{{ url_for('history') }}">Back to history</a>
+    <form method="post" action="{{ url_for('delete_report', scan_id=scan.id) }}">
+        <button class="danger" type="submit">Delete report</button>
+    </form>
+</div>
+{% endblock %}

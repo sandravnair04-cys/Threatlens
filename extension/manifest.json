@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "ThreatLens",
+  "version": "1.0.0",
+  "description": "Check the current page or any link with ThreatLens (VirusTotal + risk scoring).",
+  "permissions": ["activeTab", "contextMenus"],
+  "host_permissions": ["http://127.0.0.1:5000/*"],
+  "action": {
+    "default_title": "ThreatLens",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}

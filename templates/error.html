@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}ThreatLens - Error{% endblock %}
+{% block content %}
+<section class="card center">
+    <h1>{{ code }}</h1>
+    <p>{{ message }}</p>
+    <a class="btn" href="{{ url_for('index') }}">Back to scanner</a>
+</section>
+{% endblock %}

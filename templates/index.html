@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}ThreatLens - Scan{% endblock %}
+{% block content %}
+<section class="hero">
+    <h1>Advanced Phishing Detection &amp; Threat Intelligence</h1>
+    <p>Check URLs, domains, IP addresses and files against VirusTotal and our own risk-scoring engine.</p>
+</section>
+
+<section class="card" id="scanner" data-prefill-url="{{ prefill_url }}">
+    <div class="tabs" role="tablist">
+        <button type="button" class="tab active" data-tab="url">URL</button>
+        <button type="button" class="tab" data-tab="domain">Domain</button>
+        <button type="button" class="tab" data-tab="ip">IP address</button>
+        <button type="button" class="tab" data-tab="file">File</button>
+    </div>
+
+    <form class="panel" data-panel="url" data-type="url">
+        <label for="url-input">Suspicious link</label>
+        <input id="url-input" name="url" type="text" maxlength="2048" placeholder="https://example.com/login" required>
+        <button type="submit">Scan URL</button>
+    </form>
+
+    <form class="panel hidden" data-panel="domain" data-type="domain">
+        <label for="domain-input">Domain name</label>
+        <input id="domain-input" name="domain" type="text" maxlength="253" placeholder="example.com" required>
+        <button type="submit">Scan domain</button>
+    </form>
+
+    <form class="panel hidden" data-panel="ip" data-type="ip">
+        <label for="ip-input">IPv4 or IPv6 address</label>
+        <input id="ip-input" name="ip" type="text" maxlength="45" placeholder="8.8.8.8" required>
+        <button type="submit">Scan IP</button>
+    </form>
+
+    <div class="panel hidden" data-panel="file">
+        <form data-type="hash">
+            <label for="hash-input">File hash (MD5, SHA-1 or SHA-256) - the safest option</label>
+            <input id="hash-input" name="hash" type="text" maxlength="64" placeholder="64-character SHA-256 hash" required>
+            <button type="submit">Check hash</button>
+        </form>
+
+        <p class="divider">or choose a file</p>
+
+        <form id="file-form">
+            <input id="file-input" name="file" type="file" required>
+            <p class="note">The file is hashed on this server and only the hash is sent to VirusTotal.
+               It is <strong>not</strong> uploaded unless you tick the box below.</p>
+            <label class="check">
+                <input type="checkbox" id="consent">
+                <span>I understand that if VirusTotal has never seen this file it will be uploaded
+                and may become visible to the VirusTotal community. I will not upload private files.</span>
+            </label>
+            <button type="submit">Check file</button>
+        </form>
+    </div>
+</section>
+
+<div id="status" class="status hidden" role="status"></div>
+<section id="result" class="hidden"></section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='script.js') }}"></script>{% endblock %}
